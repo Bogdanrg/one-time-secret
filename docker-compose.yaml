@@ -1,17 +1,19 @@
 version: '3.8'
 services:
   mongodb:
-    image: mongo
+    image: mongo:latest
     container_name: "mongodb"
+    command: mongod --auth
     environment:
-      - PUID=1000
-      - PGID=1000
+        MONGO_INITDB_DATABASE: fastapi
+        MONGO_INITDB_ROOT_USERNAME: admin
+        MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
       - store:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - "27018:27017"
     restart: always
 
 volumes:
   store:
-    external: true
