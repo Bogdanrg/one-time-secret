@@ -5,7 +5,7 @@ from starlette import status
 from starlette.responses import JSONResponse
 from cryptocode import encrypt, decrypt
 from config.settings import ENCODING_STRING
-from config.database import db
+from config.database import db, create_ttl_index
 from schemas import CreateSecretModel
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
@@ -13,6 +13,9 @@ from datetime import datetime, timedelta
 app = FastAPI(
     title="Secret!"
 )
+
+
+create_ttl_index()
 
 
 @app.post('/generate', response_description="Generated secret key", description="You can provide secret and "
