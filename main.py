@@ -32,6 +32,7 @@ async def generate_secret_key(secret: CreateSecretModel = Body(...)):
     secret['phrase'] = generate_password_hash(secret['phrase'])
     secret['expire_at'] = datetime.utcnow() + timedelta(seconds=secret['timeToLive'])
     del secret['timeToLive']
+    print(secret['expire_at'])
     new_secret = await db["secrets"].insert_one(secret)
     secret_key = f"127.0.0.1:8000/secrets/{new_secret.inserted_id}"
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=secret_key)
